@@ -17,15 +17,18 @@ requirements:
   host:
     - pip
     - python
+    - wheel
   run:
     - python
 
 test:
+  commands:
+    - pip check
   imports:
     - msgpack
 
 about:
-  home: The package home page
+  home: https://msgpack.org/
   license: Apache Software
   license_family: APACHE
   license_file: 
@@ -36,7 +39,7 @@ about:
 extra:
   anaconda-services:
     ref: https://anaconda.zendesk.com/agent/tickets/48416
-    reason: Client request
+    reason: Dependency for cloudvision
   recipe-maintainers:
     - ianaobi
     - bkreider
