@@ -2,44 +2,42 @@
 {% set version = "1.0.8" %}
 
 package:
-  name: "{{ name|lower }}"
-  version: "{{ version }}"
+  name: {{ name|lower }}
+  version: {{ version }}
 
 source:
-  url: "https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz"
+  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/msgpack-{{ version }}.tar.gz
   sha256: 95c02b0e27e706e48d0e5426d1710ca78e0f0628d6e89d5b5a5b91a5f12274f3
 
 build:
+  skip: true  # [py<38]
+  script: {{ PYTHON }} -m pip install . -vv
   number: 0
-  script: "{{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation"
 
 requirements:
+  build:
+    - {{ compiler('c') }}
   host:
+    - python >=3.8
+    - cython >=3.0.8,<3.1.dev0
+    - setuptools >=35.0.2
     - pip
-    - python
-    - wheel
   run:
-    - python
+    - python >=3.8
 
 test:
-  commands:
-    - pip check
   imports:
     - msgpack
+  commands:
+    - pip check
+  requires:
+    - pip
 
 about:
-  home: https://msgpack.org/
-  license: Apache Software
-  license_family: APACHE
-  license_file: 
-  summary: "MessagePack serializer"
-  doc_url: 
-  dev_url: 
+  summary: MessagePack serializer
+  license: Apache-2.0
+  license_file: COPYING
 
 extra:
-  anaconda-services:
-    ref: https://anaconda.zendesk.com/agent/tickets/48416
-    reason: Dependency for cloudvision
   recipe-maintainers:
-    - ianaobi
-    - bkreider
+    - anaobi
